@@ -4,23 +4,29 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     RJRobot robot(RobotType::REAL);
-
-    // use these and adjust them if you need to
     const int kBlackThresh = 2000;
     const auto kSamplePeriod = 50ms;
 
-    // make a vector of type int named line_samples
+    vector<int> line_samples;
 
-    // start driving forward
+    robot.SetDriveMotors(127, 127);
 
-    // record light sensor samples until you sense a black line, then stop
+    while(true) {
+        robot.Wait(kSamplePeriod);
+        int val = robot.GetLineValue(LineSensor::CENTER);
+        line_samples.push_back(val);
+        if(val >= 2000)
+            break;
+    }
 
-    // find the median element's value without messing up the order of line_samples
+    Vector<int> copy(line_samples);
+    copy.sort();
+    int center = (int)line_samples.size() / 2;
+    int inx = line_samples.find(copy[center]);
 
-    // find the number of timesteps in between the sample with the median value and the end of the samples
-
-    // calculate how much time you need to back up, and back up for that long
+    robot.SetDriveMotors(-127, -127);
+    wait((line_samples.size() - inx) * kSamplePeriod);
+    robot.StopMotors();
 }

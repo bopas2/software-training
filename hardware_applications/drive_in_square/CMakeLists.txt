@@ -1,3 +1,8 @@
-add_executable(drive_in_square drive_in_square.cpp)
-add_dependencies(drive_in_square STSL)
-target_link_libraries(drive_in_square ${STSL_LIBS})
+cmake_minimum_required(VERSION 3.12)
+project(drive_in_square)
+
+set(CMAKE_CXX_STANDARD 14)
+
+add_executable(drive_in_square
+        CMakeLists.txt
+        drive_in_square.cpp)
